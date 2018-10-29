@@ -5,7 +5,7 @@ Overview: To investigate the feasibility of collecting smartphone sensor data fo
 
 Data availability: The data used in this study is available at Zenodo: http://doi.org/10.5281/zenodo.1238226. One participant did not consent to have their data made publicly available. We did not share GPS data as this would allow re-identification of participants. 
 
-Code: This repository contains the Matlab script to analyse the data and generate the results reported in: ... The following scripts are provided:
+Code: This repository contains the Matlab script to analyse the data and generate the results reported in: https://dx.doi.org/10.2196%2F10131. The following scripts are provided:
 
 dataCompleteness.m: Computes the number of Bluetooth data points that were recorded for each participant and compares it to the number of scheduled scans. Scanning rate is plotted as percentage of scheduled scans.
 
