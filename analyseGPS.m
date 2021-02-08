@@ -15,7 +15,7 @@ DAY_ONE = datenum([2017,6,18,0,0,0]);
 
 
 %% Load data
-gps = readtable('gps.csv');
+gps = readtable('location.3.csv');
 
 % Remove empty scans
 i = gps.latitude==0;
@@ -43,17 +43,24 @@ for p = 1:num_part
     if length(i)>MIN_DATA
         
         % compute clusters
+        for i = 1:length(latitude)-1
+            [d1km d2km]= lldistkm([latitude(i),longitude(i)],[latitude(i+1),longitude(i+1)]); 
+            Ai(i, :) = [d1km,d2km]
+        end
+        Ai(length(latitude), :) = [0 0]
         
         % compute speed
-        [d1km d2km]=lldistkm2(latitude,longitude);
-        dkm = (d1km+d2km)/2;
+        %[d1km d2km]=lldistkm2(latitude,longitude);
+        %dkm = (d1km+d2km)/2;
+        dkm = (Ai(i,0) + Ai(i,1))/2;
         dhour = diff(time)*24;
         speed = dkm./dhour;        
         
         % select samples at which participant is stationairy
         speed = conv(speed,ones(3,1)/3,'same'); % smooth data
+        %Estacionarios puntos si
         i = find(speed<THRESHOLD_SPEED);     
-        
+        %Puntos estacionarios. Sería estacionario el primero (?)
         clusters(p) = computeClusters(latitude(i),longitude(i));        
         
         
@@ -64,8 +71,11 @@ for p = 1:num_part
             week(w).i = [];
         end
         for w = 1:num_weeks
+            %is correspondientes a esa semana. 
             i = find(time > (w-1)*7+DAY_ONE & time < w*7+DAY_ONE);
+            %pilla la siguiente semana 
             w2 = rem(w-1,4)+1;
+            %[],i--> 2x1 --> 1-i siendo los is de la anterior semana. 
             week(w2).i = [week(w2).i;i];
         end
         
